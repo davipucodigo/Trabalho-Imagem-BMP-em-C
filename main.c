@@ -2,8 +2,26 @@
 #include <stdlib.h>
 #include <locale.h>
 
+void MENU(char *c) {          
+    printf("\n---------------------------------------------");
+    printf("\n    ███████████  ██████   ██████ ███████████ ");
+    printf("\n   ▒▒███▒▒▒▒▒███▒▒██████ ██████ ▒▒███▒▒▒▒▒███");
+    printf("\n    ▒███    ▒███ ▒███▒█████▒███  ▒███    ▒███");
+    printf("\n    ▒██████████  ▒███▒▒███ ▒███  ▒██████████ ");
+    printf("\n    ▒███▒▒▒▒▒███ ▒███ ▒▒▒  ▒███  ▒███▒▒▒▒▒▒  ");
+    printf("\n    ▒███    ▒███ ▒███      ▒███  ▒███        ");
+    printf("\n ██ ███████████  █████     █████ █████       ");
+    printf("\n▒▒ ▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒     ▒▒▒▒▒ ▒▒▒▒▒        ");
+    printf("\n DAVI SANT'ANNA VIEIRA - 4324 - 2025         ");
+    printf("\n");
+    printf("\n1) Selecionar Imagem");
+    printf("\n2) Separar Cores da Imagem '%s'",c);
+    printf("\n3) Cortar Imagem '%s'",c);
+    printf("\n4) Sair");   
+    printf("\n---------------------------------------------");                                                                                                                                   
+}
+
 void Troca_Endereco(char *c) {
-    
     printf("\nEndereço atual: %s",c);
     printf("\nDigite Novo Endereço: ");
     scanf("%s", c);
@@ -40,6 +58,7 @@ int main () {
     while (loop) {
 
         //Logica de Seleção de Opções;
+        MENU(endereco);
         int op;
         printf("\nDigite o N° da Opção desejada: ");
         scanf("%d", &op);
