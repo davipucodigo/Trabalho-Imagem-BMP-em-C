@@ -2,6 +2,19 @@
 #include <stdlib.h>
 #include <locale.h>
 
+
+//STRUCT PARA BMP
+typedef struct
+{
+    
+}BMP_HEADER;
+
+typedef struct
+{
+    
+}PIXEL;
+
+
 void MENU(char *c) {          
     printf("\n---------------------------------------------");
     printf("\n    ███████████  ██████   ██████ ███████████ ");
