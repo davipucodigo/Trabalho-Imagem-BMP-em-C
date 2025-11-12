@@ -25,7 +25,7 @@ int main () {
     setlocale(LC_ALL,"Portuguese");
 
     //Variaveis
-    char endereco[50] = "Olá Mundo";
+    char endereco[50] = "images/";
     int loop = 1;
 
     enum OPCOES {
