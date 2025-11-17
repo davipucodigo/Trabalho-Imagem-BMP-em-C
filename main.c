@@ -1,18 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
-
+#include <stdint.h>
 
 //STRUCT PARA BMP
 typedef struct
 {
-    
+    char magic[2];
+    uint32_t file_size;
+    uint16_t reserved1;  //NÃO USA
+    uint16_t reserved2;  //NÃO USA
+
+    uint32_t offset;
+    uint32_t DIBhdr_size;
+    uint32_t width;
+    uint32_t height;
+    uint16_t planes; //NÃO USA
+    uint16_t bits_per_px;
+    uint32_t compress; //NÃO USA
+    uint32_t x_resolution;  //NÃO USA
+    uint32_t y_resolution;  //NÃO USA
+    uint16_t colors;  //NÃO USA
+    uint32_t important_colors;  //NÃO USA
 }BMP_HEADER;
 
 typedef struct
 {
-    
-}PIXEL;
+   char red, green, blue; 
+}pixel;
 
 
 void MENU(char *c) {          
