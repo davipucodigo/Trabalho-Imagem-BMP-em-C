@@ -40,7 +40,7 @@ void Troca_Endereco(char *c) {
     scanf("%s", c);
     printf("Endereço atual Atualizado: %s",c);
     printf("\n");
-}
+} //gg easy bro.
 
 void Separar_Cores_Imagem (char *c) {
     printf("%s",c);
