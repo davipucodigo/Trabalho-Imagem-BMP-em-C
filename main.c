@@ -6,8 +6,10 @@
 //DEFINES OPÇÕES DO MENU
 #define EDITAR_ENDERECO  1
 #define SEPARAR_CORES  2
-#define CORTAR  3
-#define SAIR 4
+#define CINZA_ATE_CERTO_PONTO 3
+#define CORTAR  4
+#define ASCII_ART_APARTIR_DA_IMAGEM 5
+#define SAIR 6
 #define VAZIO 0
 
 //STRUCT PARA BMP
@@ -56,23 +58,23 @@ void MENU(char *c) {
     printf("\n---------------------------------------------");                                                                                                                                   
 }
 
-void Troca_Endereco(char *c) {
+void trocaEndereco(char *c){
     printf("\nEndereço atual: %s",c);
     printf("\nDigite Novo Endereço: ");
     scanf("%s", c);
     printf("Endereço atual Atualizado: %s",c);
     printf("\n");
-} //gg easy bro.
+}
 
-void Separar_Cores_Imagem (char *c) {
+void separarCores(char *c){
     printf("%s",c);
 }
 
-void Cortar_Imagem(char *c) {
+void cortarImagem(char *c){
 
 }
 
-int main () {
+int main(){
 
     //Config
     setlocale(LC_ALL,"Portuguese");
@@ -82,24 +84,22 @@ int main () {
     int loop = 1;
 
     //Loop do Programa;
-    while (loop) {
+    while(loop){
 
         //Logica de Seleção de Opções;
         MENU(endereco);
         int op;
         printf("\nDigite o N° da Opção desejada: ");
         scanf("%d", &op);
-        int op;
-
-        switch (op) {
-            case EDITAR_ENDERECO: Troca_Endereco(endereco); break;
-            case SEPARAR_CORES: Separar_Cores_Imagem(endereco); break;
-            case CORTAR: Cortar_Imagem(endereco); break;
+        switch(op){
+            case EDITAR_ENDERECO: trocaEndereco(endereco); break;
+            case SEPARAR_CORES: separarCores(endereco); break;
+            case CINZA_ATE_CERTO_PONTO: cinzAteCertoPonto(endereco); break;
+            case CORTAR: cortarImagem(endereco); break;
+            case ASCII_ART_APARTIR_DA_IMAGEM: asciiArt(endereco); break;
             case SAIR: loop = 0; break;
             default: op = VAZIO; break;
-        }
-        
+        } 
     }
-
     return 0;
 }
