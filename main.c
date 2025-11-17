@@ -3,6 +3,13 @@
 #include <locale.h>
 #include <stdint.h>
 
+//DEFINES OPÇÕES DO MENU
+#define EDITAR_ENDERECO  1
+#define SEPARAR_CORES  2
+#define CORTAR  3
+#define SAIR 4
+#define VAZIO 0
+
 //STRUCT PARA BMP
 typedef struct
 {
@@ -74,14 +81,6 @@ int main () {
     char endereco[50] = "images/";
     int loop = 1;
 
-    enum OPCOES {
-        VAZIO = 0,
-        EDITAR_ENDERECO = 1,
-        SEPARAR_CORES = 2,
-        CORTAR = 3,
-        SAIR = 4
-    } OPCOES = VAZIO;
-
     //Loop do Programa;
     while (loop) {
 
@@ -90,18 +89,14 @@ int main () {
         int op;
         printf("\nDigite o N° da Opção desejada: ");
         scanf("%d", &op);
-        OPCOES = op;
+        int op;
 
-        switch (OPCOES) {
-        case EDITAR_ENDERECO: Troca_Endereco(endereco); break;
-
-        case SEPARAR_CORES: Separar_Cores_Imagem(endereco); break;
-
-        case CORTAR: Cortar_Imagem(endereco); break;
-
-        case SAIR: loop = 0; break;
-
-        default: OPCOES = VAZIO; break;
+        switch (op) {
+            case EDITAR_ENDERECO: Troca_Endereco(endereco); break;
+            case SEPARAR_CORES: Separar_Cores_Imagem(endereco); break;
+            case CORTAR: Cortar_Imagem(endereco); break;
+            case SAIR: loop = 0; break;
+            default: op = VAZIO; break;
         }
         
     }
