@@ -58,7 +58,9 @@ void MENU(char *c) {
     printf("\n    ▒███    ▒███ ▒███      ▒███  ▒███        ");
     printf("\n ██ ███████████  █████     █████ █████       ");
     printf("\n▒▒ ▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒     ▒▒▒▒▒ ▒▒▒▒▒        ");
-    printf("\n DAVI SANT'ANNA VIEIRA - 4324 - 2025         ");
+    printf("\n DAVI SANT'ANNA VIEIRA                       ");
+    printf("\n HENRIQUE AZEREDO PELTZ                      ");
+    printf("\n 4324 - 2025                                 ");
     printf("\n");
     printf("\n1) Selecionar Imagem ");
     printf("\n2) Separar Cores da Imagem '%s'",c);
@@ -137,30 +139,45 @@ void separarCores(char *c){
 }
 
 // FUNÇÂO PARA SEPARAR CORES
-void cinzAteCertoPonto(char *c, int *x, int *y) {
+void cinzAteCertoPonto(char *c) {
 
-    BMP_HEADER img_header_lido;
-    BMP_HEADER img_header_escrita;
+    int x, y, linha, pixel;
+    printf("\ndigite o valor de X (width): ");
+    scanf("%d", &x);
+    printf("\ndigite o valor de Y (height): ");
+    scanf("%d", &y);
 
-    //BLOCO DE LEITURA e BLOCO de ESCRITA
-    FILE *LENDO;
-    FILE *ESCREVENDO;
+    BMP_HEADER img_header;
+    BMP_COLOR_TABLE pixels;
+
+    FILE *lendo, *escrevendo;
     
-    //ESCREVENDO = fopen("saidas/CinzaAteCertoPonto.bmp","wb");
-    LENDO = fopen(c,"rb");
-    //======================== BLOCO LOGICA EDIÇÂO BMP ============================|
-        fread(&img_header_lido, sizeof(BMP_HEADER),1,LENDO);
+    lendo = fopen(c,"rb");
+    escrevendo = fopen("cinza.bmp","wb");
+    fread(&img_header, sizeof(BMP_HEADER), 1, lendo);
+    fwrite(&img_header, sizeof(BMP_HEADER), 1, escrevendo);
+    int paddingbytes = (4-(img_header.width*3)%4)%4;
 
-        //Printa padding testado.
-        printf("width: %d | Padding: %d",img_header_lido.width,padding_teste(&img_header_lido));
-        
-        //Atualizando HEADER
-        //img_header_escrita = img_header_lido;
-        //fwrite(&img_header_escrita,sizeof(BMP_HEADER),1,ESCREVENDO);
-    
-    //=============================================================================|
-    fclose(LENDO);
-    //fclose(ESCREVENDO);
+    linha=0;
+    while(linha!=img_header.height){
+        pixel=0;
+        while(pixel!=img_header.width){
+            fread(&pixels, sizeof(BMP_COLOR_TABLE), 1, lendo);
+            if((pixel < x) && (linha < y)){
+                unsigned char gray = (0.299*pixels.red + 0.587*pixels.green + 0.114*pixels.blue);
+                pixels.red = gray;
+                pixels.green = gray;
+                pixels.blue = gray; 
+            }
+            fwrite(&pixels, sizeof(BMP_COLOR_TABLE), 1, escrevendo);
+            pixel++;
+        }
+        fseek(lendo, paddingbytes, SEEK_CUR);
+        fwrite("00", 1, paddingbytes, escrevendo);
+        linha++;
+    }
+    fclose(lendo);
+    fclose(escrevendo);
 }
 
 int main(){
@@ -193,9 +210,7 @@ int main(){
 
             //====================================================================|
             case CINZA_ATE_CERTO_PONTO:
-                int x = 0;
-                int y = 0;
-                cinzAteCertoPonto(endereco,&x,&y);
+                cinzAteCertoPonto(endereco);
             break;
 
             //====================================================================|
