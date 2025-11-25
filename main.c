@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <stdint.h>
+//teste
+#define TESTE 1
 
 //COMPILANDO na marra
 // gcc main.c -o output/main
