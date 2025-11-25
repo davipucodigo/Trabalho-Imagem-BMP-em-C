@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <stdint.h>
-//teste
-#define TESTE 1
+#include <time.h>
 
 //COMPILANDO na marra
 // gcc main.c -o output/main
@@ -34,13 +33,13 @@ typedef struct{
     uint32_t img_size_bytes; //Numero total de bytes da imagem
     uint32_t x_resolution;  //NÃO USA
     uint32_t y_resolution;  //NÃO USA
-    uint16_t colors;  //NÃO USA
+    uint32_t colors;  //NÃO USA
     uint32_t important_colors;  //NÃO USA
 }__attribute__((packed)) BMP_HEADER;
 
 typedef struct{
-   char red, green, blue; 
-}BMP_COLOR_TABLE;
+    unsigned char blue, green, red;
+}__attribute__((packed)) BMP_COLOR_TABLE;
 
 //FUNÇÂO VERIFICA PADDING
 int padding_teste(BMP_HEADER *p) {
@@ -79,22 +78,61 @@ void trocaEndereco(char *c){
 }
 
 void separarCores(char *c){
-    printf("separar cores da imagem\n");
-    FILE *lendo;
+    FILE *lendo, *escrevendo;
     BMP_HEADER img_header;
     BMP_COLOR_TABLE pixels;
+    int linha, pixel, cor;
     lendo = fopen(c, "rb");
-    
-    // //vai guardar em img_header o que ler
-    fread(&img_header, sizeof(BMP_HEADER), 1, lendo);
-    fread(&pixels, sizeof(BMP_COLOR_TABLE), 1, lendo);
-    
-    printf("\nmagic: %c%c", img_header.magic[0], img_header.magic[1]);
-    printf("\nmagic: %c%c%c", img_header.magic[2], img_header.magic[3], img_header.magic[4]);
-    printf("\nFile size: %i", img_header.file_size);
-    printf("\nAltura: %d", img_header.height);
-    printf("\nLargura: %d", img_header.width);
-    
+    for(cor=0; cor<=2; cor++){
+        fseek(lendo, 0, SEEK_SET);
+        switch(cor){
+            case 0:
+                escrevendo = fopen("vermelho.bmp","wb");
+            break;
+            case 1:
+                escrevendo = fopen("verde.bmp","wb");
+            break;
+            case 2:
+                escrevendo = fopen("azul.bmp","wb");
+            break;
+        }     
+
+        fread(&img_header, sizeof(BMP_HEADER), 1, lendo);
+        fwrite(&img_header, sizeof(BMP_HEADER), 1, escrevendo);
+
+        int paddingbytes = (4-(img_header.width*3)%4)%4;
+
+        linha=0;
+        while(linha!=img_header.height){
+            pixel=0;
+            while(pixel!=img_header.width){
+                fread(&pixels, sizeof(BMP_COLOR_TABLE), 1, lendo);
+                switch(cor){
+                    case 0:
+                        pixels.red = pixels.red;
+                        pixels.green = 0;
+                        pixels.blue = 0;
+                    break;
+                    case 1:
+                        pixels.red = 0;
+                        pixels.green = pixels.green;
+                        pixels.blue = 0;
+                    break;
+                    case 2:
+                        pixels.red = 0;
+                        pixels.green = 0;
+                        pixels.blue = pixels.blue;
+                    break;
+                }   
+                fwrite(&pixels, sizeof(BMP_COLOR_TABLE), 1, escrevendo);
+                pixel++;
+            }
+            fseek(lendo, paddingbytes, SEEK_CUR);
+            fwrite("00", 1, paddingbytes, escrevendo);
+            linha++;
+        }
+        fclose(escrevendo);
+    }
     fclose(lendo);
 }
 
@@ -131,7 +169,7 @@ int main(){
     setlocale(LC_ALL,"Portuguese");
 
     //Variaveis
-    char endereco[50] = "images/bmp_24.bmp";
+    char endereco[50] = "images/teste4x4.bmp";
     int loop = 1;
 
     //Loop do Programa;
