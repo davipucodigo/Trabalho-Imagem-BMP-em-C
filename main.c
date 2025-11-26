@@ -102,7 +102,7 @@ void separarCores(char *c){
         fread(&img_header, sizeof(BMP_HEADER), 1, lendo);
         fwrite(&img_header, sizeof(BMP_HEADER), 1, escrevendo);
 
-        int paddingbytes = (4-(img_header.width*3)%4)%4;
+        int paddingbytes = padding_teste(&img_header);
 
         linha=0;
         while(linha!=img_header.height){
