@@ -44,7 +44,7 @@ typedef struct{
 //FUNÇÂO VERIFICA PADDING
 int padding_teste(BMP_HEADER *p) {
     //Verificando paddings
-    int verifica_padding = (p->width * 3)%4;
+    int verifica_padding = (4-(p->width*3)%4)%4;
     return verifica_padding;
 }
 
