@@ -16,6 +16,15 @@
 #define SAIR 6
 #define VAZIO 0
 
+//DEFINES TONS DE CINZA
+#define PRETO_PURO 0x00
+#define CINZA_MUITO_ESCURO 0x32
+#define CINZA_ESCURO 0x64
+#define CINZA_MEDIO 0x80
+#define CINZA_CLARO 0xc8
+#define CINZA_MUITO_CLARO 0xdc
+#define BRANCO_PURO 0xff
+
 //STRUCT PARA BMP
 typedef struct{
     char magic[2]; //Identificação do arquivo BMP
@@ -256,17 +265,7 @@ void cortarImagem(char *c){
 
 void asciiArt(char *c) {
     //                                              0 -------> 128 ------> 225
-    char vetor_de_Caracteres_de_substituição[7] = {' ','.','o',"O","0","#","@"};
-
-    enum TONS_CINZA = {
-        PRETO_PURO // 00
-        CINZA_MUITO_ESCURO  // 32
-        CINZA_ESCURO // 64
-        CINZA_MEDIO // 80
-        CINZA_CLARO // C8
-        CINZA_MUITO_CLARO // DC
-        BRANCO_PURO // FF
-    }
+    char vetor_de_Caracteres_de_substituição[7] = {' ','.','o','O','&','#','@'};
     
     BMP_HEADER img_header;
     BMP_COLOR_TABLE pixels;
@@ -283,19 +282,46 @@ void asciiArt(char *c) {
         int L;
         int PX;
 
-        for (L = 0; L <= img_header.height; L++) {
-            for (PX = 0; PX <= img_header.width; PX++) {
+        //Indo para o ultimo pixel da bendita da imagem.
+        fseek(LENDO, img_header.img_size_bytes - sizeof(pixels) - padding ,SEEK_CUR);
+
+        for (L = (img_header.height - 1); L >= 0; L--) {
+            if (L > 0 && padding > 0) fseek(LENDO, -padding, SEEK_CUR);
+            
+            for (PX = (img_header.width - 1); PX >= 0; PX--) {
+
                 fread(&pixels,sizeof(pixels),1,LENDO);
+                if (L != 0 || PX != 0) fseek(LENDO, -2 * sizeof(pixels), SEEK_CUR);
+
                 unsigned char cinza = CinzaPixel(&pixels);
 
+                if (cinza >= PRETO_PURO && cinza < CINZA_MUITO_ESCURO) 
+                    fprintf(ESCREVENDO, "%c", vetor_de_Caracteres_de_substituição[0]);
 
-                
+                if (cinza >= CINZA_MUITO_ESCURO && cinza < CINZA_ESCURO) 
+                    fprintf(ESCREVENDO, "%c", vetor_de_Caracteres_de_substituição[1]);
+
+                if (cinza >= CINZA_ESCURO && cinza < CINZA_MEDIO) 
+                    fprintf(ESCREVENDO, "%c", vetor_de_Caracteres_de_substituição[2]);
+
+                if (cinza >= CINZA_MEDIO && cinza < CINZA_CLARO) 
+                    fprintf(ESCREVENDO, "%c", vetor_de_Caracteres_de_substituição[3]);
+
+                if (cinza >= CINZA_CLARO && cinza < CINZA_MUITO_CLARO) 
+                    fprintf(ESCREVENDO, "%c", vetor_de_Caracteres_de_substituição[4]);
+
+                if (cinza >= CINZA_MUITO_CLARO && cinza < BRANCO_PURO) 
+                    fprintf(ESCREVENDO, "%c", vetor_de_Caracteres_de_substituição[5]);
+
+                if (cinza >= BRANCO_PURO) 
+                    fprintf(ESCREVENDO, "%c", vetor_de_Caracteres_de_substituição[6]);
             }
+            fprintf(ESCREVENDO, "\n");
         }
-
-
     fclose(LENDO);
     fclose(ESCREVENDO);
+        
+        
 }
 
 int main(){
