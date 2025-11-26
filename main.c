@@ -48,6 +48,13 @@ int padding_teste(BMP_HEADER *p) {
     return verifica_padding;
 }
 
+//FUNÇÃO CALCULA PIXEL CINZA retorna o pixel equivalente a cinza.
+unsigned char CinzaPixel(BMP_COLOR_TABLE *px) { //BMP_COLOR_TABLE *px
+    int soma = px->red+px->blue+px->green;
+    unsigned char media = (unsigned char)(soma/3);
+    return media;
+}
+
 void MENU(char *c) {          
     printf("\n---------------------------------------------");
     printf("\n    ███████████  ██████   ██████ ███████████ ");
@@ -247,6 +254,11 @@ void cortarImagem(char *c){
     fclose(escrevendo);
 }
 
+void asciiArt(char *c) {
+    //                                              0 -------> 128 ------> 225
+    char vetor_de_Caracteres_de_substituição[7] = {' ','.','o',"O","0","#","@"};
+}
+
 int main(){
 
     //Config
@@ -287,7 +299,7 @@ int main(){
 
             //====================================================================|
             case ASCII_ART_APARTIR_DA_IMAGEM: 
-                //asciiArt(endereco); 
+                asciiArt(endereco); 
             break;
 
             case SAIR: loop = 0; break;
