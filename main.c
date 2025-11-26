@@ -141,11 +141,15 @@ void separarCores(char *c){
 // FUNÇÂO PARA SEPARAR CORES
 void cinzAteCertoPonto(char *c) {
 
-    int x, y, linha, pixel;
-    printf("\ndigite o valor de X (width): ");
-    scanf("%d", &x);
-    printf("\ndigite o valor de Y (height): ");
-    scanf("%d", &y);
+    int x1, x2, y1, y2, linha, pixel;
+    printf("\ndigite o valor de X inicial: ");
+    scanf("%d", &x1);
+    printf("\ndigite o valor de X final: ");
+    scanf("%d", &x2);
+    printf("\ndigite o valor de Y inicial: ");
+    scanf("%d", &y1);
+    printf("\ndigite o valor de Y final: ");
+    scanf("%d", &y2);
 
     BMP_HEADER img_header;
     BMP_COLOR_TABLE pixels;
@@ -158,12 +162,12 @@ void cinzAteCertoPonto(char *c) {
     fwrite(&img_header, sizeof(BMP_HEADER), 1, escrevendo);
     int paddingbytes = (4-(img_header.width*3)%4)%4;
 
-    linha=0;
-    while(linha!=img_header.height){
-        pixel=0;
-        while(pixel!=img_header.width){
+    linha=1;
+    while(linha<=img_header.height){
+        pixel=1;
+        while(pixel<=img_header.width){
             fread(&pixels, sizeof(BMP_COLOR_TABLE), 1, lendo);
-            if((pixel < x) && (linha < y)){
+            if((pixel >= x1) && (pixel <= x2) && (linha >= y1) && (linha <= y2)){
                 unsigned char gray = (0.299*pixels.red + 0.587*pixels.green + 0.114*pixels.blue);
                 pixels.red = gray;
                 pixels.green = gray;
@@ -174,6 +178,69 @@ void cinzAteCertoPonto(char *c) {
         }
         fseek(lendo, paddingbytes, SEEK_CUR);
         fwrite("00", 1, paddingbytes, escrevendo);
+        linha++;
+    }
+    fclose(lendo);
+    fclose(escrevendo);
+}
+
+void cortarImagem(char *c){
+    int x1, x2, y1, y2, linha, pixel;
+    int largura_original, largura_cortada, altura_original, altura_cortada;
+
+
+    printf("\ndigite o valor de X inicial: ");
+    scanf("%d", &x1);
+    printf("\ndigite o valor de X final: ");
+    scanf("%d", &x2);
+    printf("\ndigite o valor de Y inicial: ");
+    scanf("%d", &y1);
+    printf("\ndigite o valor de Y final: ");
+    scanf("%d", &y2);
+
+    largura_cortada = x2-x1+1;
+    altura_cortada = y2-y1+1;
+
+    int paddingbytes_cortado = (4-(largura_cortada*3)%4)%4;
+
+    BMP_HEADER img_header;
+    BMP_COLOR_TABLE pixels;
+
+    FILE *lendo, *escrevendo;
+    
+    lendo = fopen(c,"rb");
+    escrevendo = fopen("cortado.bmp","wb");
+    fread(&img_header, sizeof(BMP_HEADER), 1, lendo);
+
+    largura_original = img_header.width;
+    img_header.width = largura_cortada;
+
+    altura_original = img_header.height;
+    img_header.height = altura_cortada;
+
+    fwrite(&img_header, sizeof(BMP_HEADER), 1, escrevendo);
+
+    img_header.width = largura_original;
+    img_header.height = altura_original;
+
+    int paddingbytes = (4-(img_header.width*3)%4)%4;
+
+    linha=1;
+    while(linha<=img_header.height){
+        pixel=1;
+        while(pixel<=img_header.width){
+            printf("%d %d\n", linha, pixel);
+            fread(&pixels, sizeof(BMP_COLOR_TABLE), 1, lendo);
+            if((pixel >= x1) && (pixel <= x2) && (linha >= y1) && (linha <= y2)){
+                printf("cor: %d %d %d\n", pixels.blue, pixels.green, pixels.red);
+                fwrite(&pixels, sizeof(BMP_COLOR_TABLE), 1, escrevendo);
+            }
+            pixel++;
+        }
+        fseek(lendo, paddingbytes, SEEK_CUR);
+        if((linha >= y1) && (linha <= y2)){ //apenas escreve padding na area cortada
+            fwrite("00", 1, paddingbytes_cortado, escrevendo);
+        }
         linha++;
     }
     fclose(lendo);
@@ -215,7 +282,7 @@ int main(){
 
             //====================================================================|
             case CORTAR: 
-                //cortarImagem(endereco); 
+                cortarImagem(endereco); 
             break;
 
             //====================================================================|
