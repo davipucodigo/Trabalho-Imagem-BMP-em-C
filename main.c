@@ -257,6 +257,45 @@ void cortarImagem(char *c){
 void asciiArt(char *c) {
     //                                              0 -------> 128 ------> 225
     char vetor_de_Caracteres_de_substituição[7] = {' ','.','o',"O","0","#","@"};
+
+    enum TONS_CINZA = {
+        PRETO_PURO // 00
+        CINZA_MUITO_ESCURO  // 32
+        CINZA_ESCURO // 64
+        CINZA_MEDIO // 80
+        CINZA_CLARO // C8
+        CINZA_MUITO_CLARO // DC
+        BRANCO_PURO // FF
+    }
+    
+    BMP_HEADER img_header;
+    BMP_COLOR_TABLE pixels;
+
+    FILE * LENDO;
+    FILE * ESCREVENDO;
+
+    LENDO = fopen(c,"rb");
+    ESCREVENDO = fopen("ASCII/ascii_img.txt","wb");
+
+        fread(&img_header,sizeof(img_header),1,LENDO);
+
+        int padding = padding_teste(&pixels);
+        int L;
+        int PX;
+
+        for (L = 0; L <= img_header.height; L++) {
+            for (PX = 0; PX <= img_header.width; PX++) {
+                fread(&pixels,sizeof(pixels),1,LENDO);
+                unsigned char cinza = CinzaPixel(&pixels);
+
+
+                
+            }
+        }
+
+
+    fclose(LENDO);
+    fclose(ESCREVENDO);
 }
 
 int main(){
