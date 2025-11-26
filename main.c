@@ -89,13 +89,13 @@ void separarCores(char *c){
         fseek(lendo, 0, SEEK_SET);
         switch(cor){
             case 0:
-                escrevendo = fopen("vermelho.bmp","wb");
+                escrevendo = fopen("Cores_Separadas/vermelho.bmp","wb");
             break;
             case 1:
-                escrevendo = fopen("verde.bmp","wb");
+                escrevendo = fopen("Cores_Separadas/verde.bmp","wb");
             break;
             case 2:
-                escrevendo = fopen("azul.bmp","wb");
+                escrevendo = fopen("Cores_Separadas/azul.bmp","wb");
             break;
         }     
 
