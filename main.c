@@ -287,7 +287,7 @@ void asciiArt(char *c) {
 
         for (L = (img_header.height - 1); L >= 0; L--) {
             if (L > 0 && padding > 0) fseek(LENDO, -padding, SEEK_CUR);
-            
+
             for (PX = (img_header.width - 1); PX >= 0; PX--) {
 
                 fread(&pixels,sizeof(pixels),1,LENDO);
@@ -320,8 +320,6 @@ void asciiArt(char *c) {
         }
     fclose(LENDO);
     fclose(ESCREVENDO);
-        
-        
 }
 
 int main(){
