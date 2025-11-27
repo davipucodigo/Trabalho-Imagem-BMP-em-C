@@ -9,6 +9,6 @@ Neste trabalho criamos 4 funções para manipular imagens: <br>
 
 <h2>Modelo Editor Hexa Struct BMP</h2>
 Seguimos este modelo em hexa para estudo e desemvolvimento da Struct do arquivo .BMP:
-<br>
+<br><br>
  <img src="bmp_6x6_24bit_example.png">
  
