@@ -282,17 +282,13 @@ void asciiArt(char *c) {
         int L;
         int PX;
 
-        //Indo para o ultimo pixel da bendita da imagem.
-        fseek(LENDO, img_header.img_size_bytes - sizeof(pixels) - padding ,SEEK_CUR);
-
         for (L = (img_header.height - 1); L >= 0; L--) {
-            if (L > 0 && padding > 0) fseek(LENDO, -padding, SEEK_CUR);
+            //posiciona o ponteiro na linha de baixo e vai subindo;
+            fseek(LENDO,  img_header.offset_of_img_data + L*(img_header.width*sizeof(pixels)+padding), SEEK_SET);
 
-            for (PX = (img_header.width - 1); PX >= 0; PX--) {
-
+            for (PX = 0; PX < img_header.width; PX++) {
+                //Le a linha, sequencia de pixel delas.
                 fread(&pixels,sizeof(pixels),1,LENDO);
-                if (L != 0 || PX != 0) fseek(LENDO, -2 * sizeof(pixels), SEEK_CUR);
-
                 unsigned char cinza = CinzaPixel(&pixels);
 
                 if (cinza >= PRETO_PURO && cinza < CINZA_MUITO_ESCURO) 
