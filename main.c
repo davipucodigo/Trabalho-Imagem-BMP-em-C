@@ -278,7 +278,7 @@ void asciiArt(char *c) {
 
         fread(&img_header,sizeof(img_header),1,LENDO);
 
-        int padding = padding_teste(&pixels);
+        int padding = padding_teste(&img_header);
         int L;
         int PX;
 
