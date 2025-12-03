@@ -97,7 +97,7 @@ void trocaEndereco(char *c){
 
 //Implementar 
 void CinzaPretoBrando (char *c) {
-    
+
 }
 
 void separarCores(char *c){
@@ -340,6 +340,11 @@ int main(){
         int op;
         printf("\nDigite o N° da Opção desejada: ");
         scanf("%d", &op);
+        if (op == 0) {
+            printf("\nERRO: Entrada invalida. Por favor, digite um numero inteiro.\n");
+            while (getchar() != '\n');
+        } // Esse codigo vai garantir que entradas de char de error na op.
+
         switch(op){
             //====================================================================|
             case EDITAR_ENDERECO: 
