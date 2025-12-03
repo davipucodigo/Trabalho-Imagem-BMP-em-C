@@ -95,6 +95,11 @@ void trocaEndereco(char *c){
     printf("\n");
 }
 
+//Implementar 
+void CinzaPretoBrando (char *c) {
+    
+}
+
 void separarCores(char *c){
     FILE *lendo, *escrevendo;
     BMP_HEADER img_header;
@@ -344,6 +349,7 @@ int main(){
             //====================================================================|
             case SEPARAR_CORES:
                 separarCores(endereco);
+                CinzaPretoBrando(endereco);
             break;
 
             //====================================================================|
